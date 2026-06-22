@@ -1,100 +1,57 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Class</title>
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f7f5" />
+    <meta
+      name="description"
+      content="Weekly Class Schedule｜週一到週五的每月課表"
+    />
+    <title>Weekly Class Schedule</title>
 
-<style>
-body{
-    font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-    background:#f5f5f5;
-    margin:0;
-    padding:20px;
-}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-.container{
-    max-width:800px;
-    margin:auto;
-}
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-.header{
-    text-align:center;
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    margin-bottom:20px;
-}
+  <body>
+    <main class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">WEEKLY CLASS SCHEDULE</p>
+          <h1 id="month-title">本月課表</h1>
+          <p class="subtitle">週一至週五，讓每一天都一目了然。</p>
+        </div>
 
-.header h1{
-    margin:0;
-}
+        <div class="today-chip" aria-label="今天日期">
+          <span>今天</span>
+          <strong id="today-label"></strong>
+        </div>
+      </header>
 
-.card{
-    background:white;
-    padding:20px;
-    margin-bottom:15px;
-    border-radius:15px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
-}
+      <section class="legend" aria-label="課表狀態說明">
+        <span><i class="dot dot-today"></i>今天</span>
+        <span><i class="dot dot-upcoming"></i>即將到來</span>
+        <span><i class="dot dot-past"></i>已結束</span>
+      </section>
 
-.date{
-    color:#666;
-    font-size:14px;
-}
+      <section>
+        <div id="schedule" class="schedule" aria-live="polite"></div>
 
-.lesson{
-    font-size:22px;
-    font-weight:bold;
-    margin-top:10px;
-}
+        <div id="empty-state" class="empty-state" hidden>
+          <span>☕</span>
+          <h2>這個月還沒有課程</h2>
+          <p>在 script.js 的 classes 陣列加入課程即可。</p>
+        </div>
+      </section>
+    </main>
 
-ul{
-    padding-left:20px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<div class="header">
-<h1>📚 Daily Class</h1>
-<p>SMC 技術分析課程</p>
-</div>
-
-<div class="card">
-<div class="date">第一堂</div>
-<div class="lesson">K線基礎</div>
-<ul>
-<li>K線結構</li>
-<li>同K不同命</li>
-<li>高低點判讀</li>
-</ul>
-</div>
-
-<div class="card">
-<div class="date">第二堂</div>
-<div class="lesson">市場結構 MSS</div>
-<ul>
-<li>HH、HL、LH、LL</li>
-<li>MSS</li>
-<li>趨勢反轉</li>
-</ul>
-</div>
-
-<div class="card">
-<div class="date">第三堂</div>
-<div class="lesson">FVG 與 BPR</div>
-<ul>
-<li>Fair Value Gap</li>
-<li>BPR</li>
-<li>流動性觀念</li>
-</ul>
-</div>
-
-</div>
-
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
