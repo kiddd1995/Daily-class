@@ -17,7 +17,348 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="styles.css" />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #17352d;
+        --muted: #73817c;
+        --line: #dde6e2;
+        --surface: rgba(255, 255, 255, 0.88);
+        --green: #218c6b;
+        --green-dark: #12664e;
+        --green-soft: #dff3ea;
+        --orange: #f1a15a;
+        font-family: "Noto Sans TC", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(
+            circle at 90% 4%,
+            rgba(242, 190, 111, 0.2),
+            transparent 28rem
+          ),
+          linear-gradient(145deg, #f8faf8 0%, #edf4f1 100%);
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image: radial-gradient(
+          rgba(24, 75, 60, 0.07) 0.7px,
+          transparent 0.7px
+        );
+        background-size: 18px 18px;
+        content: "";
+        pointer-events: none;
+      }
+
+      .page-shell {
+        width: min(100% - 32px, 920px);
+        margin-inline: auto;
+        padding: 64px 0 80px;
+      }
+
+      .hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 32px;
+        margin-bottom: 28px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--green);
+        font: 700 0.72rem/1 "DM Sans", sans-serif;
+        letter-spacing: 0.18em;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.35rem, 8vw, 4.6rem);
+        line-height: 1.06;
+        letter-spacing: -0.055em;
+      }
+
+      .subtitle {
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .today-chip {
+        flex: 0 0 auto;
+        min-width: 112px;
+        padding: 13px 17px;
+        border: 1px solid rgba(33, 140, 107, 0.14);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.68);
+        box-shadow: 0 10px 32px rgba(31, 79, 64, 0.06);
+        text-align: left;
+      }
+
+      .today-chip span {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--muted);
+        font-size: 0.72rem;
+      }
+
+      .today-chip strong {
+        font: 700 1rem/1.3 "DM Sans", "Noto Sans TC", sans-serif;
+      }
+
+      .legend {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 0.76rem;
+      }
+
+      .legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #aeb8b4;
+      }
+
+      .dot-today {
+        background: var(--orange);
+      }
+
+      .dot-upcoming {
+        background: var(--green);
+      }
+
+      .schedule {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .class-card {
+        position: relative;
+        display: grid;
+        grid-template-columns: 64px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 18px;
+        min-height: 112px;
+        padding: 21px 22px;
+        overflow: hidden;
+        border: 1px solid rgba(32, 80, 65, 0.1);
+        border-radius: 22px;
+        background: var(--surface);
+        box-shadow: 0 12px 30px rgba(31, 72, 59, 0.055);
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease;
+      }
+
+      .class-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 38px rgba(31, 72, 59, 0.09);
+      }
+
+      .date-block {
+        padding-right: 16px;
+        border-right: 1px solid var(--line);
+        text-align: center;
+      }
+
+      .date-number {
+        display: block;
+        font: 700 1.9rem/1 "DM Sans", sans-serif;
+        letter-spacing: -0.05em;
+      }
+
+      .weekday {
+        display: block;
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 0.74rem;
+        font-weight: 600;
+      }
+
+      .class-info {
+        min-width: 0;
+      }
+
+      .class-info h2 {
+        margin: 0 0 7px;
+        overflow: hidden;
+        font-size: 1rem;
+        line-height: 1.45;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .class-time {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0;
+        color: var(--muted);
+        font: 500 0.78rem/1.3 "DM Sans", "Noto Sans TC", sans-serif;
+      }
+
+      .class-time::before {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--green);
+        content: "";
+      }
+
+      .status-label {
+        padding: 5px 9px;
+        border-radius: 999px;
+        color: var(--green-dark);
+        background: var(--green-soft);
+        font-size: 0.68rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .class-card.is-today {
+        border-color: rgba(241, 161, 90, 0.55);
+        background: linear-gradient(135deg, #fffaf2, #fff 68%);
+        box-shadow: 0 14px 36px rgba(185, 107, 42, 0.13);
+      }
+
+      .class-card.is-today::before {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 5px;
+        background: var(--orange);
+        content: "";
+      }
+
+      .class-card.is-today .status-label {
+        color: #9a541c;
+        background: #ffead2;
+      }
+
+      .class-card.is-past {
+        opacity: 0.55;
+        filter: grayscale(0.5);
+        box-shadow: none;
+      }
+
+      .class-card.is-past .status-label {
+        color: #707b77;
+        background: #e9eeec;
+      }
+
+      .empty-state {
+        padding: 64px 24px;
+        border: 1px dashed #cddbd5;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.55);
+        text-align: center;
+      }
+
+      .empty-state span {
+        font-size: 2rem;
+      }
+
+      .empty-state h2 {
+        margin: 12px 0 7px;
+        font-size: 1.1rem;
+      }
+
+      .empty-state p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      @media (max-width: 720px) {
+        .page-shell {
+          width: min(100% - 24px, 560px);
+          padding: 38px 0 56px;
+        }
+
+        .hero {
+          align-items: center;
+          gap: 14px;
+          margin-bottom: 24px;
+        }
+
+        .subtitle {
+          font-size: 0.84rem;
+        }
+
+        .today-chip {
+          min-width: 96px;
+          padding: 11px 13px;
+          border-radius: 15px;
+        }
+
+        .schedule {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 410px) {
+        .eyebrow {
+          font-size: 0.62rem;
+        }
+
+        h1 {
+          font-size: 2.15rem;
+        }
+
+        .today-chip {
+          min-width: 82px;
+        }
+
+        .today-chip strong {
+          font-size: 0.88rem;
+        }
+
+        .legend {
+          gap: 13px;
+        }
+
+        .class-card {
+          grid-template-columns: 56px minmax(0, 1fr) auto;
+          gap: 13px;
+          padding: 18px 14px;
+        }
+
+        .date-block {
+          padding-right: 12px;
+        }
+
+        .status-label {
+          padding-inline: 7px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          scroll-behavior: auto !important;
+          transition: none !important;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -47,11 +388,150 @@
         <div id="empty-state" class="empty-state" hidden>
           <span>☕</span>
           <h2>這個月還沒有課程</h2>
-          <p>在 script.js 的 classes 陣列加入課程即可。</p>
+          <p>請在 classes 陣列加入課程資料。</p>
         </div>
       </section>
     </main>
 
-    <script src="script.js"></script>
+    <script>
+      // 課程資料統一放在這裡。
+      // 日期格式為 YYYY-MM-DD，時間與課程名稱可自由修改。
+      const classes = [
+        { date: "2026-06-01", time: "09:00–10:30", name: "英文會話" },
+        { date: "2026-06-02", time: "14:00–15:30", name: "基礎設計" },
+        { date: "2026-06-03", time: "10:00–11:30", name: "程式設計" },
+        { date: "2026-06-04", time: "13:30–15:00", name: "行銷概論" },
+        { date: "2026-06-05", time: "09:30–11:00", name: "專題討論" },
+        { date: "2026-06-08", time: "09:00–10:30", name: "英文會話" },
+        { date: "2026-06-09", time: "14:00–15:30", name: "基礎設計" },
+        { date: "2026-06-10", time: "10:00–11:30", name: "程式設計" },
+        { date: "2026-06-11", time: "13:30–15:00", name: "行銷概論" },
+        { date: "2026-06-12", time: "09:30–11:00", name: "專題討論" },
+        { date: "2026-06-15", time: "09:00–10:30", name: "英文會話" },
+        { date: "2026-06-16", time: "14:00–15:30", name: "基礎設計" },
+        { date: "2026-06-17", time: "10:00–11:30", name: "程式設計" },
+        { date: "2026-06-18", time: "13:30–15:00", name: "行銷概論" },
+        { date: "2026-06-19", time: "09:30–11:00", name: "專題討論" },
+        { date: "2026-06-22", time: "09:00–10:30", name: "英文會話" },
+        { date: "2026-06-23", time: "14:00–15:30", name: "基礎設計" },
+        { date: "2026-06-24", time: "10:00–11:30", name: "程式設計" },
+        { date: "2026-06-25", time: "13:30–15:00", name: "行銷概論" },
+        { date: "2026-06-26", time: "09:30–11:00", name: "專題討論" },
+        { date: "2026-06-29", time: "09:00–10:30", name: "英文會話" },
+        { date: "2026-06-30", time: "14:00–15:30", name: "基礎設計" }
+      ];
+
+      const schedule = document.querySelector("#schedule");
+      const emptyState = document.querySelector("#empty-state");
+      const monthTitle = document.querySelector("#month-title");
+      const todayLabel = document.querySelector("#today-label");
+
+      const today = startOfDay(new Date());
+      const sortedClasses = [...classes].sort((a, b) =>
+        a.date.localeCompare(b.date)
+      );
+
+      function parseLocalDate(dateString) {
+        const [year, month, day] = dateString.split("-").map(Number);
+        return new Date(year, month - 1, day);
+      }
+
+      function startOfDay(date) {
+        return new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate()
+        );
+      }
+
+      function isSameDay(firstDate, secondDate) {
+        return firstDate.getTime() === secondDate.getTime();
+      }
+
+      function getStatus(classDate) {
+        if (isSameDay(classDate, today)) {
+          return {
+            className: "is-today",
+            text: "今天"
+          };
+        }
+
+        if (classDate < today) {
+          return {
+            className: "is-past",
+            text: "已結束"
+          };
+        }
+
+        return {
+          className: "",
+          text: "即將到來"
+        };
+      }
+
+      function renderSchedule() {
+        todayLabel.textContent = new Intl.DateTimeFormat("zh-TW", {
+          month: "numeric",
+          day: "numeric",
+          weekday: "short"
+        }).format(today);
+
+        if (sortedClasses.length === 0) {
+          monthTitle.textContent = new Intl.DateTimeFormat("zh-TW", {
+            year: "numeric",
+            month: "long"
+          }).format(today);
+
+          emptyState.hidden = false;
+          return;
+        }
+
+        const displayMonth = parseLocalDate(sortedClasses[0].date);
+
+        monthTitle.textContent = new Intl.DateTimeFormat("zh-TW", {
+          year: "numeric",
+          month: "long"
+        }).format(displayMonth);
+
+        schedule.innerHTML = sortedClasses
+          .map((classItem) => {
+            const classDate = parseLocalDate(classItem.date);
+            const status = getStatus(classDate);
+
+            const weekday = new Intl.DateTimeFormat("zh-TW", {
+              weekday: "short"
+            }).format(classDate);
+
+            const accessibleDate = new Intl.DateTimeFormat("zh-TW", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              weekday: "long"
+            }).format(classDate);
+
+            return `
+              <article
+                class="class-card ${status.className}"
+                aria-label="${accessibleDate}，${classItem.name}，${classItem.time}"
+              >
+                <div class="date-block">
+                  <span class="date-number">${classDate.getDate()}</span>
+                  <span class="weekday">${weekday}</span>
+                </div>
+
+                <div class="class-info">
+                  <h2>${classItem.name}</h2>
+                  <p class="class-time">${classItem.time}</p>
+                </div>
+
+                <span class="status-label">${status.text}</span>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      renderSchedule();
+    </script>
   </body>
 </html>
